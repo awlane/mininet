@@ -349,7 +349,7 @@ class TCIntf( Intf ):
 
         # Optimization: return if nothing else to configure
         # Question: what happens if we want to reset things?
-        if ( bw is None and not delay and not loss
+        if ( bw is None and delay is None and loss is None
              and max_queue_size is None ):
             return
 
@@ -359,6 +359,7 @@ class TCIntf( Intf ):
             cmds = [ '%s qdisc del dev %s root' ]
         else:
             cmds = []
+
 
         # Bandwidth limits via various methods
         bwcmds, parent = self.bwCmds( bw=bw, speedup=speedup,
