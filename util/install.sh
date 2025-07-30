@@ -171,7 +171,7 @@ function mn_deps {
 		$install gcc make socat psmisc xterm openssh iperf \
 			iproute telnet ${PYPKG}-setuptools libcgroup-tools \
 			ethtool help2man python-pyflakes python3-pylint \
-                        python-pep8 ${PYPKG}-pexpect ${PYPKG}-tk
+                        python-pycodestyle ${PYPKG}-pexpect ${PYPKG}-tk
     else  # Debian/Ubuntu
         pf=pyflakes
         pep8=pep8
@@ -185,7 +185,7 @@ function mn_deps {
         # * pyflakes to pyflakes3
         if [ "$DIST" = "Debian" -a `expr $RELEASE '>=' 11` = "1" ]; then
                 pf=pyflakes3
-                pep8=python3-pep8
+                pep8=python3-pycodestyle
         fi
 
         $install gcc make socat psmisc xterm ssh iperf telnet \
@@ -193,17 +193,18 @@ function mn_deps {
                  net-tools ${PYPKG}-tk
 
         # Install pip
-        $install ${PYPKG}-pip || $install ${PYPKG}-pip-whl
-        if ! ${PYTHON} -m pip -V; then
-            if [ $PYTHON_VERSION == 2 ]; then
-                wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
-            else
-                wget https://bootstrap.pypa.io/get-pip.py
-            fi
-            sudo ${PYTHON} get-pip.py
-            rm get-pip.py
-        fi
-       ${python} -m pip install pexpect
+        # $install ${PYPKG}-pip || $install ${PYPKG}-pip-whl
+        # if ! ${PYTHON} -m pip -V; then
+        #     if [ $PYTHON_VERSION == 2 ]; then
+        #         wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
+        #     else
+        #         wget https://bootstrap.pypa.io/get-pip.py
+        #     fi
+        #     sudo ${PYTHON} get-pip.py
+        #     rm get-pip.py
+        # fi
+    #    ${python} -m pip install pexpect
+        $intsall python-pexpect
         $install iproute2 || $install iproute
         $install cgroup-tools || $install cgroup-bin
         $install cgroupfs-mount
@@ -222,7 +223,8 @@ function mn_doc {
     if ! $install doxygen-latex; then
         echo "doxygen-latex not needed"
     fi
-    sudo pip2 install doxypy
+    $install python-doxypy
+    # sudo pip2 install doxypy
 }
 
 # The following will cause a full OF install, covering:
