@@ -173,20 +173,8 @@ function mn_deps {
 			ethtool help2man python-pyflakes python3-pylint \
                         python-pycodestyle ${PYPKG}-pexpect ${PYPKG}-tk
     else  # Debian/Ubuntu
-        pf=pyflakes
-        pep8=pep8
-        # Starting around 20.04, installing pyflakes instead of pyflakes3
-        # causes Python 2 to be installed, which is exactly NOT what we want.
-        if [ "$DIST" = "Ubuntu" -a `expr $RELEASE '>=' 20.04` = "1" ]; then
-                pf=pyflakes3
-        fi
-        # Debian 11 "bullseye" renamed
-        # * pep8 to python3-pep8
-        # * pyflakes to pyflakes3
-        if [ "$DIST" = "Debian" -a `expr $RELEASE '>=' 11` = "1" ]; then
-                pf=pyflakes3
-                pep8=python3-pycodestyle
-        fi
+        pf=python3-pyflakes
+        pep8=python3-pycodestyle
 
         $install gcc make socat psmisc xterm ssh iperf telnet \
                  ethtool help2man $pf pylint $pep8 \
@@ -204,7 +192,7 @@ function mn_deps {
         #     rm get-pip.py
         # fi
     #    ${python} -m pip install pexpect
-        $intsall python-pexpect
+        $install python3-pexpect
         $install iproute2 || $install iproute
         $install cgroup-tools || $install cgroup-bin
         $install cgroupfs-mount
